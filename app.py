@@ -1,3 +1,5 @@
+import os
+
 from flask import Flask
 from flask_restful import Api
 from flask_jwt import JWT
@@ -7,7 +9,7 @@ from resources.item import Item, ItemList
 from resources.store import Store, StoreList
 
 app = Flask(__name__)
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///data.db'
+app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get('DATABASE_URL', 'sqlite:///data.db') # allows to default to sqlite for testing
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False # This turns off the flask sqlalchemy modification tracker, and uses the SQLalchemy one instead
 app.secret_key = 'jose'
 api = Api(app)
