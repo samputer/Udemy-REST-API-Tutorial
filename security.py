@@ -1,9 +1,9 @@
-from werkzeug.security import safe_str_cmp # safer way of comparing strings with different encodings
+from werkzeug.security import check_password_hash # safer way of comparing strings with different encodings
 from models.user import UserModel
 
 def authenticate(username, password):
 	user = UserModel.find_by_username(username)
-	if user and safe_str_cmp(user.password, password):
+	if user and check_password_hash(user.password, password):
 		return user
 
 def identity(payload):

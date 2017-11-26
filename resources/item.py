@@ -39,7 +39,7 @@ class Item(Resource):
 		return {'message': 'Item deleted'}
 
 	def put(self, name):
-		data = Item.parser.parse_args() # reqparser is really neat and allows you to restrict specifiic args
+		data = Item.parser.parse_args() # reqparser is really neat and allows you to restrict specific args
 		item = ItemModel.find_by_name(name)
 		if item is None:
 			item = ItemModel(name, **data)
