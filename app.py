@@ -20,9 +20,8 @@ jwt = JWT(app, authenticate, identity) # this creates /auth endpoint that we pas
 api.add_resource(Store, '/store/<string:name>')
 api.add_resource(Item, '/item/<string:name>')
 api.add_resource(ItemList, '/items')
-# api.add_resource(UserRegister, '/register')
 api.add_resource(StoreList, '/stores')
-api.add_resource(UserResource, '/user')
+api.add_resource(UserResource, '/user/<string:username>', '/user', endpoint = 'user')
 
 if __name__ == '__main__': # this prevents running on import, as opposed to when executing directly
 	from db import db # importing this here prevents multiple libs importing the same thing
