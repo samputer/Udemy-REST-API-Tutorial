@@ -61,6 +61,6 @@ class UserResource(Resource): # this is a flask resource, needs a different name
 					if user:
 						return {"user": user.limited_json()}, 200
 					else:
-						return {"message": "No user found"}, 200
+						return {"message": "No user found"}, 400
 
 		return {"user": current_identity.json()}, 200
