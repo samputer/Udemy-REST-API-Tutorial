@@ -9,7 +9,7 @@ class UserModel(db.Model):
 	# Columns
 	id = db.Column(db.Integer, primary_key=True)
 	username = db.Column(db.String(80))
-	password = db.Column(db.String(80))
+	password = db.Column(db.String(100))
 	first_name = db.Column(db.String(80))
 	last_name = db.Column(db.String(80))
 	email_address = db.Column(db.String(80))
@@ -29,6 +29,7 @@ class UserModel(db.Model):
 		return {'username':self.username, 'first_name':self.first_name, 'last_name': self.last_name, 'email_address': self.email_address}
 
 	def limited_json(self):
+		# This is the data we are exposing if someone is looking at another user's profile
 		return {'first_name':self.first_name}
 
 	@classmethod

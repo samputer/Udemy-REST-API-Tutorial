@@ -29,7 +29,7 @@ class UserResource(Resource): # this is a flask resource, needs a different name
 
 		return {"message": "User created successfully."}, 201
 
-
+	@jwt_required()
 	def put(self, username):
 
 		data = UserResource.parser.parse_args()
@@ -51,6 +51,7 @@ class UserResource(Resource): # this is a flask resource, needs a different name
 		else:
 				return {"message": "You can only update your own user: '{}'.".format(current_identity.username)}, 403
 
+	@jwt_required()
 	def get(self, username=None):
 
 		# if user has requested anyone but their own username
