@@ -1,16 +1,19 @@
 from app import app
 from db import db
 
-db.init_app(app)
+def get_http_exception_handler(app):
+    """Overrides the default http exception handler to return JSON."""
+	handle_http_exception = app.handle_http_exception
+	@wraps(handle_http_exception)
+    def ret_val(exception):
+		exc = handle_http_exception(exception)    
+		return jsonify({'code':exc.code, 'message':exc.description}), exc.code
+	return ret_val
 
- 
-@app.errorhandler(Exception)
-def handle_error(e):
-	print("woo")
-	code = 500
-	if isinstance(e, HTTPException):
-		code = e.code
-	return jsonify(error=str(e)), code
+# Override the HTTP exception handler.
+app.handle_http_exception = get_http_exception_handler(app)
+
+db.init_app(app)
 
 
 @app.before_first_request
