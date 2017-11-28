@@ -6,6 +6,7 @@ db.init_app(app)
  
 @app.errorhandler(Exception)
 def handle_error(e):
+	print("woo")
     code = 500
     if isinstance(e, HTTPException):
         code = e.code
