@@ -7,10 +7,10 @@ db.init_app(app)
 @app.errorhandler(Exception)
 def handle_error(e):
 	print("woo")
-    code = 500
-    if isinstance(e, HTTPException):
-        code = e.code
-    return jsonify(error=str(e)), code
+	code = 500
+	if isinstance(e, HTTPException):
+		code = e.code
+	return jsonify(error=str(e)), code
 
 
 @app.before_first_request
