@@ -16,14 +16,6 @@ app.config['DEBUG'] = False
 app.secret_key = 'jose'
 api = Api(app)
 
-app.config['TRAP_HTTP_EXCEPTIONS']=True
-@app.errorhandler(Exception)
-def handle_error(e):
-    code = 500
-    if isinstance(e, HTTPException):
-        code = e.code
-    return jsonify(error=str(e)), code
-
 jwt = JWT(app, authenticate, identity) # this creates /auth endpoint that we pass a username and password to, this then uses the authenticate function
 
 api.add_resource(Store, '/store/<string:name>')
@@ -32,6 +24,15 @@ api.add_resource(ItemList, '/items')
 api.add_resource(StoreList, '/stores')
 api.add_resource(UserResource, '/user/<string:username>', '/user', endpoint = 'user')
  
+app.config['TRAP_HTTP_EXCEPTIONS']=True
+@app.errorhandler(Exception)
+def handle_error(e):
+    code = 500
+    if isinstance(e, HTTPException):
+        code = e.code
+    return jsonify(error=str(e)), code
+
+
 if __name__ == '__main__': # this prevents running on import, as opposed to when executing directly
 	from db import db # importing this here prevents multiple libs importing the same thing
 	db.init_app(app)
