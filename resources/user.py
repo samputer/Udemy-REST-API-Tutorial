@@ -54,12 +54,15 @@ class UserResource(Resource): # this is a flask resource, needs a different name
 	@jwt_required()
 	def get(self, username=None):
 
-		# if user has requested anyone but their own username
-		if ((username is not None) and (username != current_identity.username)):
-					user = UserModel.find_by_username(username)
-					if user:
-						return {"user": user.limited_json()}, 200
-					else:
-						return {"message": "No user found"}, 400
+		try:
+			# if user has requested anyone but their own username
+			if ((username is not None) and (username != current_identity.username)):
+						user = UserModel.find_by_username(username)
+						if user:
+							return {"user": user.limited_json()}, 200
+						else:
+							return {"message": "No user found"}, 400
 
-		return {"user": current_identity.json()}, 200
+			return {"user": current_identity.json()}, 200
+		except:
+			return {"message": "problem"}, 200
