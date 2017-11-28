@@ -7,6 +7,7 @@ from security import authenticate, identity # our other file
 from resources.user import UserResource
 from resources.item import Item, ItemList
 from resources.store import Store, StoreList
+from flask_jwt import JWTError
 
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get('DATABASE_URL', 'sqlite:///data.db') # allows to default to sqlite for testing
@@ -22,6 +23,10 @@ api.add_resource(Item, '/item/<string:name>')
 api.add_resource(ItemList, '/items')
 api.add_resource(StoreList, '/stores')
 api.add_resource(UserResource, '/user/<string:username>', '/user', endpoint = 'user')
+ 
+@app.errorhandler(JWTError)
+def on_auth_error():
+    return jsonify({'message': 'There was an error with your JWT token!'}), 401
 
 if __name__ == '__main__': # this prevents running on import, as opposed to when executing directly
 	from db import db # importing this here prevents multiple libs importing the same thing
