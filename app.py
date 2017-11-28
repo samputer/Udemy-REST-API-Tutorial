@@ -14,7 +14,14 @@ app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get('DATABASE_URL', 'sqlite:/
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False # This turns off the flask sqlalchemy modification tracker, and uses the SQLalchemy one instead
 app.config['DEBUG'] = False
 app.secret_key = 'jose'
-api = Api(app)
+errors = {
+    'JWTError': {
+        'message': "JWTError",
+        'status': 401,
+    }
+}
+
+api = Api(app, errors=errors)
 
 jwt = JWT(app, authenticate, identity) # this creates /auth endpoint that we pass a username and password to, this then uses the authenticate function
 
@@ -23,11 +30,6 @@ api.add_resource(Item, '/item/<string:name>')
 api.add_resource(ItemList, '/items')
 api.add_resource(StoreList, '/stores')
 api.add_resource(UserResource, '/user/<string:username>', '/user', endpoint = 'user')
-  
-@app.errorhandler(flask_jwt.JWTError)
-def on_auth_error():
-	return jsonify({'message': 'There was an error with your JWT token!'}), 401
-
 
 if __name__ == '__main__': # this prevents running on import, as opposed to when executing directly
 	from db import db # importing this here prevents multiple libs importing the same thing
