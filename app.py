@@ -23,10 +23,6 @@ api.add_resource(Item, '/item/<string:name>')
 api.add_resource(ItemList, '/items')
 api.add_resource(StoreList, '/stores')
 api.add_resource(UserResource, '/user/<string:username>', '/user', endpoint = 'user')
- 
-@app.errorhandler(JWTError)
-def on_auth_error():
-    return jsonify({'message': 'There was an error with your JWT token!'}), 401
 
 if __name__ == '__main__': # this prevents running on import, as opposed to when executing directly
 	from db import db # importing this here prevents multiple libs importing the same thing
@@ -38,4 +34,8 @@ if __name__ == '__main__': # this prevents running on import, as opposed to when
 		def create_tables():
 			db.create_all()
  
+ 	@app.errorhandler(JWTError)
+	def on_auth_error():
+    	return jsonify({'message': 'There was an error with your JWT token!'}), 401
+
 	app.run(port=5000)
