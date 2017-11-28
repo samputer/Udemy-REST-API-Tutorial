@@ -16,7 +16,7 @@ app.config['DEBUG'] = False
 app.secret_key = 'jose'
 errors = {
     'JWTError': {
-        'message': "JWTError",
+        'message': "There was an error with your JWT token (it probably expired).",
         'status': 401,
     }
 }
