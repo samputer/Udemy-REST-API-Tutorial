@@ -16,7 +16,7 @@ app.config['DEBUG'] = False
 app.secret_key = 'jose'
 api = Api(app)
 
-
+app.config['TRAP_HTTP_EXCEPTIONS']=True
 @app.errorhandler(Exception)
 def handle_error(e):
     code = 500
