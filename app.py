@@ -24,7 +24,7 @@ api.add_resource(ItemList, '/items')
 api.add_resource(StoreList, '/stores')
 api.add_resource(UserResource, '/user/<string:username>', '/user', endpoint = 'user')
   
-@app.errorhandler(JWTError)
+@app.errorhandler(flask_jwt.JWTError)
 def on_auth_error():
 	return jsonify({'message': 'There was an error with your JWT token!'}), 401
 
