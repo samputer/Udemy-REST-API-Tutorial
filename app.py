@@ -16,6 +16,14 @@ app.config['DEBUG'] = False
 app.secret_key = 'jose'
 api = Api(app)
 
+
+@app.errorhandler(Exception)
+def handle_error(e):
+    code = 500
+    if isinstance(e, HTTPException):
+        code = e.code
+    return jsonify(error=str(e)), code
+
 jwt = JWT(app, authenticate, identity) # this creates /auth endpoint that we pass a username and password to, this then uses the authenticate function
 
 api.add_resource(Store, '/store/<string:name>')
@@ -23,7 +31,7 @@ api.add_resource(Item, '/item/<string:name>')
 api.add_resource(ItemList, '/items')
 api.add_resource(StoreList, '/stores')
 api.add_resource(UserResource, '/user/<string:username>', '/user', endpoint = 'user')
-
+ 
 if __name__ == '__main__': # this prevents running on import, as opposed to when executing directly
 	from db import db # importing this here prevents multiple libs importing the same thing
 	db.init_app(app)
@@ -34,8 +42,4 @@ if __name__ == '__main__': # this prevents running on import, as opposed to when
 		def create_tables():
 			db.create_all()
  
- 	@app.errorhandler(JWTError)
-	def on_auth_error():
-    	return jsonify({'message': 'There was an error with your JWT token!'}), 401
-
 	app.run(port=5000)
