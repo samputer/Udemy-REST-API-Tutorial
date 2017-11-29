@@ -30,7 +30,7 @@ class UserResource(Resource): # this is a flask resource, needs a different name
 		return {"message": "User created successfully."}, 201
 
 	@jwt_required()
-	def put(self, username):
+	def put(self, username=None):
 
 		data = UserResource.parser.parse_args()
 
